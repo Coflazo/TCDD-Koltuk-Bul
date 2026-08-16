@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TCDD Koltuk Bul: boş koltuk takibi ve otomatik yer tutma</title>
+<title>TCDD Koltuk Bul: catches a TCDD seat the moment someone cancels</title>
 <meta name="description" content="A seat watcher and auto-reserve bot for TCDD e-bilet. Waits for a cancellation, takes the seat, holds it, and wakes you up.">
 <style>
   /* One accent, one neutral ramp, one typeface. Everything else is spacing. */
@@ -107,11 +107,12 @@
 <div class="wrap">
 
   <header>
-    <p class="eyebrow">TCDD e-bilet &nbsp;/&nbsp; otomasyon</p>
-    <h1>Boş koltuk<br>çıkınca<br><em>anında</em> yakalar.</h1>
-    <p class="lede">Dolu trende yer açılana kadar bekler, koltuğu tutar, seni uyandırır.</p>
-    <p class="lede-en">Trains sell out weeks ahead, but people cancel constantly and the seat
-      is gone again in a minute. This waits for that minute.</p>
+    <p class="eyebrow">TCDD e-bilet &nbsp;/&nbsp; seat watcher</p>
+    <h1>Catches the<br>seat the<br><em>moment</em> it opens.</h1>
+    <p class="lede">Waits for a cancellation, reserves the seat, wakes you up.</p>
+    <p class="lede-en">Busy trains sell out weeks ahead, but people cancel constantly and the
+      seat is gone again in a minute. This waits for that minute. The whole network, all 460
+      stations, YHT, Anahat and Bölgesel, whatever classes that service actually runs.</p>
     <div class="cta">
       <a class="btn" href="https://github.com/Coflazo/TCDD-Koltuk-Bul">Read the source</a>
       <a class="btn ghost" href="#how">How it works</a>
@@ -120,13 +121,13 @@
 
   <div class="stats">
     <div class="stat"><b>460</b><span>stations</span></div>
-    <div class="stat"><b>1</b><span>python file</span></div>
-    <div class="stat"><b>1</b><span>dependency</span></div>
-    <div class="stat"><b>45-90s</b><span>polite sweep</span></div>
+    <div class="stat"><b>3</b><span>YHT · Anahat · Bölgesel</span></div>
+    <div class="stat"><b>every 60s</b><span>it checks for you</span></div>
+    <div class="stat"><b>0</b><span>card details touched</span></div>
   </div>
 
   <section id="how" class="rise">
-    <h2>Nasıl çalışır</h2>
+    <h2>How it works</h2>
     <p class="sub">Seven steps, and it only ever asks you things a person would actually know.</p>
 
     <div class="step"><div class="n">01</div><div>
@@ -167,7 +168,7 @@
   </section>
 
   <section class="rise">
-    <h2>Örnek</h2>
+    <h2>Example</h2>
     <p class="sub">An hour of waiting, then somebody cancels.</p>
     <div class="term">
       <div class="bar"><i></i><i></i><i></i></div>
@@ -203,7 +204,7 @@
   </section>
 
   <section class="rise">
-    <h2>Zor kısımlar</h2>
+    <h2>The hard parts</h2>
     <p class="sub">The parts that took the longest were never the parts that looked hard.</p>
     <div class="cards">
       <div class="card">
@@ -249,7 +250,7 @@
   </section>
 
   <footer>
-    <p><strong>Kişisel kullanım içindir.</strong> Tek yolcu, tek koltuk, nazik aralıklarla.
+    <p><strong>Personal use only.</strong> One traveller, one seat, polite intervals.
     Wheelchair places are excluded unless explicitly chosen , they exist for people who
     cannot use any other seat. Payment is never automated.</p>
     <p>MIT &nbsp;·&nbsp; <a href="https://github.com/Coflazo/TCDD-Koltuk-Bul">github.com/Coflazo/TCDD-Koltuk-Bul</a>

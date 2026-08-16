@@ -2,55 +2,37 @@
 
 # TCDD Koltuk Bul
 
-### Dolu trende boş koltuk çıkınca saniyesinde yakalayıp yerini tutan bot
-
-A seat watcher and auto-reserve bot for TCDD e-bilet
+### Catches a seat the moment someone cancels, and holds it for you
 
 ![python](https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white)
 ![deps](https://img.shields.io/badge/runtime%20dependencies-1-brightgreen)
 ![platform](https://img.shields.io/badge/macOS%20·%20Windows%20·%20Linux-lightgrey)
 ![license](https://img.shields.io/badge/license-MIT-black)
 
-`ebilet.tcddtasimacilik.gov.tr` &nbsp;·&nbsp; 460 stations &nbsp;·&nbsp; one file &nbsp;·&nbsp; one dependency
+**460 stations · YHT, Anahat, Bölgesel · checks every minute · free · runs on your own computer**
 
-</div>
+for `ebilet.tcddtasimacilik.gov.tr`
 
-<div align="center">
+[Türkçe](docs/i18n/README.tr.md) ·
+[Deutsch](docs/i18n/README.de.md) ·
+[Русский](docs/i18n/README.ru.md) ·
+[العربية](docs/i18n/README.ar.md) ·
+[فارسی](docs/i18n/README.fa.md) ·
+[Français](docs/i18n/README.fr.md) ·
+[Español](docs/i18n/README.es.md) ·
+[Nederlands](docs/i18n/README.nl.md) ·
+[Български](docs/i18n/README.bg.md) ·
+[Українська](docs/i18n/README.uk.md)
 
-**Read this in your language** &nbsp;(machine translated)
-
-[Türkçe](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=tr&_x_tr_hl=tr) ·
-[English](https://github.com/Coflazo/TCDD-Koltuk-Bul) ·
-[Deutsch](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=de&_x_tr_hl=de) ·
-[Русский](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=ru&_x_tr_hl=ru) ·
-[العربية](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=ar&_x_tr_hl=ar) ·
-[فارسی](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=fa&_x_tr_hl=fa) ·
-[Français](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=fr&_x_tr_hl=fr) ·
-[Español](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=es&_x_tr_hl=es) ·
-[Nederlands](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=nl&_x_tr_hl=nl) ·
-[Български](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=bg&_x_tr_hl=bg)
-
-[Українська](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=uk&_x_tr_hl=uk) ·
-[Polski](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=pl&_x_tr_hl=pl) ·
-[Română](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=ro&_x_tr_hl=ro) ·
-[Ελληνικά](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=el&_x_tr_hl=el) ·
-[Italiano](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=it) ·
-[Azərbaycanca](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=az&_x_tr_hl=az) ·
-[ქართული](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=ka&_x_tr_hl=ka) ·
-[中文](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=zh-CN&_x_tr_hl=zh-CN) ·
-[日本語](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=ja&_x_tr_hl=ja) ·
-[한국어](https://github-com.translate.goog/Coflazo/TCDD-Koltuk-Bul?_x_tr_sl=auto&_x_tr_tl=ko&_x_tr_hl=ko)
-
-</div>
-
----
-
-Trains between İstanbul and Ankara sell out weeks ahead, but people cancel constantly.
-The seat is there for a minute or two and then it is gone again. I got tired of
-refreshing the page hoping to be the one looking at it when that happened, so I wrote
-this. It waits, and when a seat appears it takes it and wakes me up.
-
-<div align="center">
+[Polski](docs/i18n/README.pl.md) ·
+[Română](docs/i18n/README.ro.md) ·
+[Ελληνικά](docs/i18n/README.el.md) ·
+[Italiano](docs/i18n/README.it.md) ·
+[Azərbaycanca](docs/i18n/README.az.md) ·
+[ქართული](docs/i18n/README.ka.md) ·
+[中文](docs/i18n/README.zh.md) ·
+[日本語](docs/i18n/README.ja.md) ·
+[한국어](docs/i18n/README.ko.md)
 
 ![TCDD Koltuk Bul demo](docs/demo.gif)
 
@@ -58,60 +40,28 @@ this. It waits, and when a seat appears it takes it and wakes me up.
 
 ---
 
-## Nasıl çalışır / How it works
+Busy TCDD trains sell out weeks ahead, but people cancel constantly. The seat is there for
+a minute and then it is gone. I got tired of refreshing the page hoping to be the one
+looking at it when that happened, so I wrote this.
 
-**1. Asks where you are going.** Type any fragment of a station name. It pulls all 460
-stations out of the page in one call and matches them locally, so Turkish characters are
-optional and typos are fine. `sogutlucesme` finds SÖĞÜTLÜÇEŞME, and `ankra` gets you a
-*did you mean ankara?*. The arrival list only ever offers stations you can actually
-reach from the one you picked.
+Works across the whole network: all 460 stations, both directions, YHT, Anahat and
+Bölgesel. No route, train or class is written into the code. It reads all of that off the
+site every time.
 
-**2. Asks which day, or days.** One day if you are fixed, several if you are flexible:
-`17 18 21` and it watches all three. Typing a day that already went past means next
-month, because that is obviously what you meant.
+## How it works
 
-**3. Opens Chrome and reads every train on those days.** Departure, arrival, duration,
-and then it opens each train to read every class with its own price and free seat count.
-The results page only shows the cheapest fare, which quietly hides that BUSİNESS is ₺465
-more than EKONOMİ.
+1. You type where you are going. Typos are fine.
+2. You type which day, or several days if you are flexible.
+3. It opens Chrome and lists every train, with the price and free seats of each class.
+4. You pick the trains and the classes you would actually take, and what the alarm
+   should be.
+5. It checks again every minute or so, quietly, in the background.
+6. When a seat appears it selects it, picks the seat on the map, and holds it.
+7. It beeps until you come and pay.
 
-**4. Shows you the lot and asks what you want.** Pick by row number or by departure time,
-since `08:23` is how you actually think about trains. Then pick which classes you would
-genuinely sit in, out of the classes that route really runs.
+That is it. You leave it running and go do something else.
 
-**5. Then it waits.** A sweep every 45 to 90 seconds, randomised. One browser behaving
-like a patient person, not a request flood.
-
-**6. When a seat appears, it takes it.** Picks the class, hits Seçin and Devam Et, lands
-on the seat map, finds a free seat, confirms bay/bayan and completes the selection. That
-is a real hold on TCDD's side.
-
-**7. Then it makes noise.** Beeps, opens a video, and leaves Chrome parked on the held
-seat so you type your details and pay in that same window. It never sweeps again after
-that, and it never touches your card.
-
-```
-stations ──► days ──► scrape every train ──► you pick trains + classes
-                                                      │
-                              ┌───────────────────────┘
-                              ▼
-                   sweep ──► seat found? ──no──► wait 45-90s ──┐
-                              │                                │
-                             yes                               └──(loop)
-                              ▼
-              pick class ──► Seçin ──► Devam Et ──► seat map
-                              ▼
-             click free seat ──► bay/bayan ──► Seçimi Tamamla
-                              ▼
-                    ALARM + browser parked on your seat
-```
-
----
-
-## Örnek / Example run
-
-I want to be in Ankara on the 25th, I could live with the 26th, and I am not paying for
-business class unless I really have to.
+## Example run
 
 ```
   TCDD Koltuk Bul  ·  TCDD boş koltuk takibi  ·  ctrl-c to quit
@@ -152,10 +102,6 @@ business class unless I really have to.
   travelling as bay or bayan? b
 
   watching 2 train(s)
-    25.08 08:23  YHT: 81030 İSTANBUL - ANKARA → 12:58
-    25.08 09:00  YHT: 81458 İSTANBUL-SİVAS → 13:15
-    İSTANBUL(SÖĞÜTLÜÇEŞME) → ANKARA GAR · EKONOMİ · bay
-
   sweep 6 found nothing · looking again in  62s
 ```
 
@@ -169,49 +115,109 @@ An hour later somebody cancels:
   browser is left open on the seat. go and pay.  ctrl-c here when you are done.
 ```
 
----
+## Setup
 
-## Kurulum / Setup
+You do not need to know anything about programming. Follow these in order.
 
-### Tek satır / One line
+### Step 1. Open the terminal
 
-You do not need to know anything about programming. Paste one line and it handles Python,
-the browser, and a double-clickable shortcut.
+This is the black window where you type commands. It is already on your computer.
 
-**macOS and Linux**, in Terminal:
+- **macOS**: press `Cmd` and `Space` together, type `Terminal`, press Enter.
+- **Windows**: click Start, type `PowerShell`, press Enter.
+- **Linux**: press `Ctrl` `Alt` `T`.
+
+### Step 2. Go to your Desktop
+
+Type this and press Enter. It moves you to your Desktop folder, which is where the program
+will be installed so you can find it easily afterwards.
+
+```bash
+cd ~/Desktop
+```
+
+On Windows, type this instead:
+
+```powershell
+cd $HOME\Desktop
+```
+
+Nothing visible happens. That is correct. The text at the left of your cursor should now
+end in `Desktop`.
+
+### Step 3. Install it
+
+Copy the line below, paste it into the terminal, press Enter.
+
+**macOS and Linux:**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Coflazo/TCDD-Koltuk-Bul/main/install.sh | bash
 ```
 
-**Windows**, in PowerShell:
+**Windows:**
 
 ```powershell
 irm https://raw.githubusercontent.com/Coflazo/TCDD-Koltuk-Bul/main/install.ps1 | iex
 ```
 
-Where it installs itself, which is the bit people always ask about:
+Now wait. It will print what it is doing, step by step. It downloads a browser, so it
+takes about a minute. Do not close the window while it works. When it is finished it says
+`Done.` and tells you where it put everything.
 
-| Where you run it from | What it does |
-|---|---|
-| Sitting on your Desktop | Makes a `TCDD-Koltuk-Bul` folder on the Desktop |
-| Already inside a folder under the Desktop | Installs right there, no new folder |
-| Anywhere else (home folder, `C:\`, a random path) | Goes to the Desktop and makes the folder there |
+A folder called `TCDD-Koltuk-Bul` is now on your Desktop.
 
-It finds your real Desktop even if it is renamed (Masaüstü, Schreibtisch) or redirected
-into OneDrive.
+### Step 4. Run it
 
-When it finishes you get a file to double-click:
+Open that folder and double-click:
 
-- macOS and Linux: **`Başlat.command`**
-- Windows: **`Baslat.bat`**
+- **macOS and Linux**: `Başlat.command`
+- **Windows**: `Baslat.bat`
 
-### Elle kurulum / Manual setup
+The first time on macOS you may get a warning about an unidentified developer. Right-click
+the file instead, choose Open, then Open again.
+
+### Step 5. Answer its questions
+
+It asks where you are going, which days, which trains, which classes, and what should
+wake you up when it finds something. Type the answers, press Enter after each. For the
+alarm you can press Enter for the default video, paste a YouTube link of your own, point
+it at a sound file on your computer, or type `beep` for sound only. All of this is explained in [How it works](#how-it-works) above.
+
+### Step 6. Leave it alone
+
+Once it starts checking, a Chrome window opens by itself. **Do not close it and do not
+click inside it.** That window is the program working. You can leave both windows behind
+other windows and carry on using your computer normally.
+
+At the bottom of the terminal you will see a line counting down and changing:
+
+```
+  sweep 6 found nothing · looking again in  62s
+```
+
+That means it is working. It repeats roughly every minute, for as long as it takes.
+
+A few things to keep in mind while it runs:
+
+- **Do not shut your computer down**, and stop it going to sleep. On macOS this is System
+  Settings, Lock Screen. On Windows it is Settings, System, Power. If the computer sleeps,
+  it stops checking.
+- **Keep the internet connected.**
+- **Do not close the terminal window.** Closing it stops the program.
+
+### Step 7. When it finds a seat
+
+It beeps repeatedly, opens a video, and stops checking. The Chrome window is now sitting
+on your seat, already held. Go to that window, fill in your details and pay, the same as
+you would normally.
+
+Press Enter in the terminal to stop the beeping.
+
+To stop the program at any time, click the terminal and press `Ctrl` and `C` together.
 
 <details>
-<summary>If you would rather do it yourself</summary>
-
-**macOS and Linux**
+<summary>Manual install</summary>
 
 ```bash
 git clone https://github.com/Coflazo/TCDD-Koltuk-Bul.git
@@ -222,169 +228,79 @@ patchright install chromium
 python3 koltukbul.py
 ```
 
-**Windows PowerShell**
-
-```powershell
-git clone https://github.com/Coflazo/TCDD-Koltuk-Bul.git
-cd TCDD-Koltuk-Bul
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-patchright install chromium
-py koltukbul.py
-```
-
-If PowerShell blocks the activate script:
-`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
-
-**Windows cmd**
-
-```bat
-py -m venv .venv
-.venv\Scripts\activate.bat
-pip install -r requirements.txt
-patchright install chromium
-py koltukbul.py
-```
+On Windows use `py` instead of `python3`, and `.\.venv\Scripts\Activate.ps1` to activate.
+If PowerShell blocks that script, run
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first.
 
 </details>
 
-### Try it without a TCDD account, a browser, or the internet
+## For developers
 
 Real result pages from the live site are saved in `tests/fixtures/`. Replay mode runs the
-actual scraper over them:
+scraper over them, with no browser, no network and no TCDD account:
 
 ```bash
 pip install beautifulsoup4 lxml
 python3 koltukbul.py --replay
 ```
 
-The parsers are not reimplemented for replay. `scan()` and `read_classes()` are the exact
-same functions that read the live site, pointed at a saved page through a small shim, so
-if a parser breaks the offline run breaks with it.
+`scan()` and `read_classes()` are not reimplemented for replay. They are the same
+functions that read the live site, pointed at a saved page through a small shim, so a
+broken selector breaks the offline run too.
 
 ```bash
 python3 koltukbul.py --test
 ```
 
-Runs every parser check offline: date formats, the pick syntax, Turkish folding, the
-did-you-mean ranking, the fixture-backed scrape, and the rule that a wheelchair place is
-only ever watched when it was explicitly asked for. Prints `ok` and nothing else.
+Checks the date formats, the pick syntax, Turkish folding, the did-you-mean ranking, the
+saved-page scrape, and the rule that a wheelchair place is only watched when it was asked
+for. Prints `ok` and nothing else.
 
-### Ayarlar / Settings
+## Settings
 
-Nothing is hardcoded. Set any of these to change it:
+Nothing is hardcoded:
 
 | Variable | Default | What it does |
 |---|---|---|
-| `TCDD_POLL` | `45,90` | seconds between sweeps, randomised in this range |
+| `TCDD_POLL` | `45,90` | seconds between checks, randomised in this range |
 | `TCDD_VIDEO` | a YouTube link | opened when a seat is found |
 | `TCDD_PROFILE` | `~/.koltukbul_profile` | Chrome profile folder |
 | `TCDD_STATE` | `~/.koltukbul.json` | remembered stations and gender |
-| `TCDD_DEBUG` | `debug` | where failure screenshots are written |
+| `TCDD_DEBUG` | `debug` | where failure screenshots go |
 | `TCDD_HOME` | TCDD e-bilet URL | site root |
 
-```bash
-TCDD_POLL=20,40 python3 koltukbul.py          # macOS and Linux
-$env:TCDD_POLL="20,40"; py koltukbul.py       # PowerShell
-```
+Stations and gender are remembered, so the second run is mostly pressing enter.
 
-Stations and gender are remembered between runs, so the second time is mostly enter.
-
----
-
-## Ne kırıldı ve nasıl buldum / What broke and how I found it
-
-None of the hard parts were the parts that looked hard. Every one of these was found by
-running the thing and watching it fail, not by reading the HTML.
-
-**Free seats are an image, not a class.** The seat map does not mark availability with a
-CSS class. It swaps the seat image, and that image is an inline base64 blob. Hardcoding
-the blob would break the first time TCDD redraws an icon. Instead it groups the seats by
-image and picks the group whose size matches the wagon button's own "Boş" count. That
-number is already on the page, so the map calibrates itself.
-
-**A dropdown that closes when you open it.** The station input is a `data-toggle`.
-Clicking it when the list is already open closes it, and every one of the 460 options
-silently stops being clickable. Symptom was a 30 second timeout on an element that
-Playwright could see in the DOM: `locator resolved to <button id="gidis-465">` followed by
-`element is not visible`. Fixed by only opening it when it is shut.
-
-**The same date, twice.** The calendar shows two months side by side and each one repeats
-the other's spill-over days as `.off` cells, so `td[data-date="2026-09-05"]` matches two
-elements and strict mode throws. I only caught it because I tested a date in the overlap:
-`raw=2, :not(.off)=1`.
-
-**`"İ".lower()` is not `"i"`.** Python turns it into an `i` plus a separate combining dot,
-so an uppercase Turkish station name never matched anything a person typed. Fold the
-Turkish letters flat first, lowercase second.
-
-**Ranking, not matching, was the real problem.** Searching `ista` returned BAĞIŞTAŞ first,
-which is a genuinely correct substring match, since "bağıştaş" folds to "bag**ista**s".
-Matching was never broken. Scoring was missing. Name beats city, start beats middle.
-
-**Cards move.** Trains were keyed by card position, `gidis1`, `gidis2`. As the day's early
-departures leave, the list shifts up and `gidis1` quietly becomes a different train. Now
-everything is keyed on departure time.
-
-**The accordion closed the card I needed.** Scanning all trains left the last one expanded,
-because Bootstrap's accordion only keeps one open. By the time the bot went back for the
-train that actually had the seat, its wagon button was collapsed and unclickable. This one
-would only ever have shown up at the exact moment it mattered.
-
-**The date input eats its own clicks.** `.departureDate input` is covered by its wrapper
-div, which owns the pointer events. The log said `<div class="datePickerInput
-departureDate"> intercepts pointer events`, which is Playwright telling you exactly what
-is wrong if you read past the timeout.
-
----
-
-## Gerekenler / Requirements
+## Requirements
 
 | | |
 |---|---|
 | Python | 3.8 or newer |
 | Runtime dependency | [`patchright`](https://github.com/Kaliiiiiiiiii-Vinyzu/patchright), or plain `playwright` |
-| Browser | Chromium via `patchright install chromium`, or an installed Google Chrome |
+| Browser | Chromium via `patchright install chromium`, or installed Google Chrome |
 | OS | macOS, Windows, Linux |
-| Replay mode only | `beautifulsoup4` and `lxml`, not needed to run the bot |
-| Everything else | standard library: `difflib`, `json`, `re`, `threading`, `webbrowser` |
+| Replay mode only | `beautifulsoup4` and `lxml` |
+| Everything else | standard library |
 
-It needs a desktop session, because the browser runs headful on purpose. Headless is the
-easiest thing in the world for a site to spot, and there is nothing to hide here anyway:
-this is one person's browser doing one person's booking.
+It needs a desktop session, because the browser runs headful on purpose. Headless is easy
+for a site to spot, and there is nothing to hide: this is one person's browser doing one
+person's booking.
 
----
+## Use, limits and legal
 
-## Kullanım koşulları / Use, limits and legal
+Read [DISCLAIMER.md](DISCLAIMER.md) before using this. [Türkçe](docs/i18n/DISCLAIMER.tr.md)
 
-Read [DISCLAIMER.md](DISCLAIMER.md) before using this. Short version:
+- Personal use. One traveller, one seat. There is no multi-passenger mode, on purpose.
+- Not for resale or scalping. Reselling tickets can be an offence in Turkey.
+- Payment is never automated. It never sees, stores or types card details.
+- Nothing is bypassed. No captcha solving, no login bypass, no payment bypass.
+- One browser, one check every 45 to 90 seconds. Do not turn it into a load test.
+- Your data stays on your machine. Only your stations and bay/bayan are saved, locally.
+- Wheelchair places are excluded unless you explicitly select them. They exist for people
+  who cannot use any other seat.
+- Complying with TCDD's terms of use is your responsibility. Read them.
 
-- **Kişisel kullanım içindir.** One traveller, one seat. It holds exactly one seat and has
-  no multi passenger mode, on purpose.
-- **Ticaret için değildir.** Not for resale, not for scalping, not for booking inventory
-  you intend to sell on. Reselling tickets can be an offence in Turkey and this tool will
-  not help you do it.
-- **Payment is never automated.** The bot stops at the payment step. It never sees, stores
-  or types card details, and it never completes a purchase for you.
-- **It does not bypass anything.** No captcha solving, no login bypass, no payment bypass,
-  no paywall circumvention. It clicks the same public pages a person clicks.
-- **Polite by design.** One browser, one sweep every 45 to 90 seconds, randomised. It is
-  not a load test and must not be turned into one.
-- **Your data stays on your machine.** The only things stored are your chosen stations and
-  bay/bayan, in `~/.koltukbul.json`, plus a local Chrome profile. Nothing is sent anywhere
-  except to TCDD, by your own browser, as you.
-- **Wheelchair places are excluded by default** and are only ever watched if you
-  explicitly select them. They exist for people who cannot use any other seat.
-- **You are responsible for complying with TCDD's terms of use.** Read them. If automated
-  access is not permitted for your use, do not use this.
+No warranty. See [LICENSE](LICENSE).
 
-**This is not legal advice and it is not a guarantee of legality.** I am not a lawyer, and
-no README can make a tool "legally proof" under Turkish law or any other. What the above
-describes is the design intent and the limits built into the code. Whether your particular
-use is lawful is on you.
-
-No warranty of any kind. See [LICENSE](LICENSE).
-
-Not affiliated with, endorsed by, or connected to TCDD Taşımacılık A.Ş. in any way.
-"TCDD" is used only to say which website this reads.
+Not affiliated with, endorsed by or connected to TCDD Taşımacılık A.Ş. The name identifies
+which website this reads, nothing more.
