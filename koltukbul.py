@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""TCDD Koltuk Bul - dolu trende bos koltuk bekleyip yerini tutan bot.
+"""TCDD Koltuk Bul - catches a seat the moment someone cancels, and holds it.
 
 I got tired of refreshing the TCDD page every ten minutes hoping somebody would cancel,
 so I made it do that for me. It asks where I am going, which days work, which trains and
@@ -631,7 +631,36 @@ def grab(page, hit, gender):
 
 # ---------------------------------------------------------------- alarm
 
-def beep():
+YOUTUBE = re.compile(
+    r"^https?://(?:www\.|m\.)?(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/)"
+    r"([A-Za-z0-9_-]{11})")
+AUDIO = (".mp3", ".wav", ".aiff", ".aif", ".m4a", ".ogg", ".flac")
+
+
+def check_alarm(raw):
+    """Work out what the user gave us, or refuse it.
+
+    Deliberately a short list. Anything can be pasted into a prompt, and opening whatever
+    turns up is how you end up launching something you did not mean to at four in the
+    morning. Returns (kind, value) or (None, why it was refused).
+    """
+    raw = raw.strip().strip('"\'')
+    if raw.lower() in ("beep", "bip", "ses", "sound", "none"):
+        return "beep", None
+    m = YOUTUBE.match(raw)
+    if m:
+        return "video", "https://www.youtube.com/watch?v=" + m.group(1)
+    if raw.lower().startswith(("http://", "https://")):
+        return None, "only YouTube links are accepted here"
+    path = os.path.expanduser(raw)
+    if raw.lower().endswith(AUDIO):
+        if not os.path.isfile(path):
+            return None, "no file at %s" % path
+        return "sound", os.path.abspath(path)
+    return None, "not a YouTube link, a sound file, or the word beep"
+
+
+def system_beep():
     sound = "/System/Library/Sounds/Glass.aiff"
     if platform.system() == "Darwin" and os.path.exists(sound):
         os.system("afplay " + sound)
@@ -639,12 +668,23 @@ def beep():
         print("\a", end="", flush=True)
 
 
-def alarm(lines):
+def play(path):
+    if platform.system() == "Darwin":
+        os.system('afplay "%s"' % path)
+    elif platform.system() == "Windows":
+        os.system('powershell -c (New-Object Media.SoundPlayer "%s").PlaySync()' % path)
+    else:
+        if os.system('paplay "%s" 2>/dev/null' % path) != 0:
+            os.system('aplay -q "%s" 2>/dev/null' % path)
+
+
+def alarm(lines, kind="video", value=None):
     print()
     for h in lines:
         print("  " + bold(h))
-    if not webbrowser.open(VIDEO):
-        print("  could not open a browser, watch it yourself: " + VIDEO)
+    if kind == "video":
+        if not webbrowser.open(value):
+            print("  could not open a browser, here it is: " + value)
     stop = threading.Event()
 
     def ring():
@@ -652,7 +692,7 @@ def alarm(lines):
             for _ in range(3):
                 if stop.is_set():   # checked per beep so ENTER stops it right away
                     return
-                beep()
+                play(value) if kind == "sound" else system_beep()
             stop.wait(1.0)
 
     threading.Thread(target=ring, daemon=True).start()
@@ -688,6 +728,32 @@ def ask_gender():
             return "man"
         if g in ("k", "kadin", "kadın", "bayan", "w", "women"):
             return "women"
+
+
+def ask_alarm():
+    """What should go off when a seat turns up."""
+    saved = recall().get("alarm")
+    if saved:
+        kind, value = saved.get("kind"), saved.get("value")
+        shown = value if kind != "beep" else "just a beep"
+        if not ask("  alarm: %s  " % shown + dim("[enter = keep, or type a new one] ")).strip():
+            return kind, value
+    print(dim("\n  what should go off when a seat turns up?"
+              "\n    enter        the default video, %s"
+              "\n    a YouTube link"
+              "\n    a sound file on your computer (.mp3 .wav .aiff .m4a .ogg .flac)"
+              "\n    beep         no video, just the sound" % VIDEO))
+    while True:
+        raw = ask("  alarm: ").strip()
+        if not raw:
+            kind, value = "video", VIDEO
+            break
+        kind, value = check_alarm(raw)
+        if kind:
+            break
+        print(dim("    %s" % value))
+    remember(alarm={"kind": kind, "value": value})
+    return kind, value
 
 
 def ask_classes(rows):
@@ -790,6 +856,7 @@ def main():
         classes = ask_classes(rows)
         gender = ask_gender()
         remember(gender=gender)
+        alarm_kind, alarm_value = ask_alarm()
 
         print("\n  " + bold("watching %d train(s)" % len(watch)))
         for t in watch:
@@ -840,7 +907,7 @@ def main():
                     saved = shot(page, "grab")
                     lines.append("could not hold it, grab it by hand: %s%s"
                                  % (e, ", saw " + saved if saved else ""))
-                alarm(lines)
+                alarm(lines, alarm_kind, alarm_value)
                 # stop here. no more sweeps, and do not close the browser, it is sitting
                 # on the held seat and I want to pay in that exact window
                 print(dim("\n  browser is left open on the seat. go and pay."
@@ -964,6 +1031,25 @@ def test():
     assert cls["BUSİNESS"]["price"] == "₺1.395,00"           # header price hides this
     assert cls["LOCA"]["seats"] == 0 and cls["LOCA"]["price"] == "DOLU"
     assert "TEKERLEKLİ SANDALYE" in cls
+
+    # what we accept as an alarm, and more importantly what we refuse
+    assert check_alarm("beep") == ("beep", None)
+    assert check_alarm("  BEEP ") == ("beep", None)
+    for link in ("https://www.youtube.com/watch?v=M7IdXA23JVI",
+                 "http://youtube.com/watch?v=M7IdXA23JVI",
+                 "https://youtu.be/M7IdXA23JVI",
+                 "https://m.youtube.com/watch?v=M7IdXA23JVI",
+                 "https://www.youtube.com/shorts/M7IdXA23JVI"):
+        assert check_alarm(link) == ("video", "https://www.youtube.com/watch?v=M7IdXA23JVI"), link
+    here = os.path.abspath(__file__)
+    assert check_alarm(here)[0] is None                      # a .py is not a sound file
+    for bad in ("https://example.com/evil.exe", "file:///etc/passwd", "rm -rf /",
+                "https://youtube.com.evil.com/watch?v=M7IdXA23JVI", "", "~/nope.mp3"):
+        kind, why = check_alarm(bad)
+        assert kind is None and why, bad
+    snd = "/System/Library/Sounds/Glass.aiff"
+    if os.path.exists(snd):
+        assert check_alarm(snd) == ("sound", snd)
 
     # asking for EKONOMİ must never hand back the wheelchair place
     hits, seen = available(page, ["08:23"], {"EKONOMİ"})
