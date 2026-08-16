@@ -24,6 +24,7 @@ import re
 import sys
 import threading
 import time
+import pathlib
 import webbrowser
 from datetime import date, datetime
 
@@ -378,6 +379,22 @@ def search(page, frm, to, when):
     return True
 
 
+DEBUG = env("TCDD_DEBUG", "debug")
+
+
+def shot(page, tag):
+    """Dump a screenshot when something goes wrong. Sweeps run unattended for hours and
+    a stack trace on its own never tells me what the page actually looked like."""
+    try:
+        os.makedirs(DEBUG, exist_ok=True)
+        name = "%s-%s.png" % (datetime.now().strftime("%Y%m%d-%H%M%S"), tag)
+        path = os.path.join(DEBUG, name)
+        page.screenshot(path=path)
+        return path
+    except Exception:
+        return None
+
+
 def open_card(card):
     card.locator("div.customPx[data-toggle=collapse]").first.click()
     card.locator("div[id^=collapse]").first.wait_for(state="visible", timeout=10000)
@@ -462,6 +479,85 @@ def available(page, deps, classes):
                                  t["dep"], t["name"][:30], t["arr"],
                                  c["name"], c["price"], c["seats"])})
     return hits, seen
+
+
+# ------------------------------------------------- replay: parsers vs saved HTML
+
+class Node:
+    """Just enough of the Playwright locator API for the parsers to run on saved HTML.
+
+    The point is that scan() and read_classes() are not rewritten for replay. The same
+    code that reads the live site reads the fixtures, so if a parser breaks, the offline
+    test breaks with it. bs4 does the CSS work, clicks are no-ops, nothing waits.
+    """
+
+    def __init__(self, tags):
+        self.tags = tags
+
+    def locator(self, css):
+        out = []
+        for t in self.tags:
+            out.extend(t.select(css))
+        return Node(out)
+
+    def count(self):
+        return len(self.tags)
+
+    def nth(self, i):
+        return Node(self.tags[i:i + 1])
+
+    @property
+    def first(self):
+        return Node(self.tags[:1])
+
+    def all(self):
+        return [Node([t]) for t in self.tags]
+
+    def inner_text(self):
+        return " ".join(self.tags[0].get_text(" ").split()) if self.tags else ""
+
+    def get_attribute(self, name):
+        return self.tags[0].get(name) if self.tags else None
+
+    def click(self, **kw):
+        pass            # replay is read only
+
+    def wait_for(self, **kw):
+        pass
+
+
+def fixture(path):
+    """Saved results page -> something the parsers accept, plus the date it was saved for."""
+    from bs4 import BeautifulSoup
+    html = pathlib.Path(path).read_text(encoding="utf-8")
+    try:
+        soup = BeautifulSoup(html, "lxml")
+    except Exception:
+        soup = BeautifulSoup(html, "html.parser")
+    m = re.search(r"(\d{2})\.(\d{2})\.(\d{4})", html)
+    when = date(int(m.group(3)), int(m.group(2)), int(m.group(1))) if m else None
+    return Node([soup]), when
+
+
+def fixture_paths():
+    here = pathlib.Path(__file__).resolve().parent / "tests" / "fixtures"
+    return sorted(here.glob("*.html"))
+
+
+def replay(paths=None):
+    """Run the real parsers over saved pages. No browser, no network, no TCDD account."""
+    paths = paths or fixture_paths()
+    if not paths:
+        sys.exit("  no fixtures in tests/fixtures")
+    rows = []
+    for p in paths:
+        page, when = fixture(p)
+        found = scan(page, when, expand="all")
+        print("  %s  %s  %d trains" % (dim(pathlib.Path(p).name), when, len(found)))
+        rows.extend(found)
+    show(rows)
+    print()
+    return rows
 
 
 # ---------------------------------------------------------------- holding a seat
@@ -730,7 +826,10 @@ def main():
                         hits = found
                         break
                 except Exception as e:
-                    print(dim("  %s %s: retrying (%s)" % (stamp(), d.strftime("%d.%m"), e)))
+                    saved = shot(page, "sweep-%s" % d.strftime("%d%m"))
+                    print(dim("  %s %s: retrying (%s)%s"
+                              % (stamp(), d.strftime("%d.%m"), e,
+                                 ", saw " + saved if saved else "")))
             if not by_day:
                 sys.exit("  every train you were watching has gone. nothing left to do.")
             if hits:
@@ -738,7 +837,9 @@ def main():
                 try:
                     lines.append("held -> " + grab(page, hits[0], gender))
                 except Exception as e:   # a broken click must never eat the alarm
-                    lines.append("could not hold it, grab it by hand: %s" % e)
+                    saved = shot(page, "grab")
+                    lines.append("could not hold it, grab it by hand: %s%s"
+                                 % (e, ", saw " + saved if saved else ""))
                 alarm(lines)
                 # stop here. no more sweeps, and do not close the browser, it is sitting
                 # on the held seat and I want to pay in that exact window
@@ -841,11 +942,46 @@ def test():
             assert got == want, (reply, got)
     finally:
         globals()["ask"] = real
+
+    # and now the real thing: the same parsers, run over a page saved off the live site
+    try:
+        import bs4                                          # noqa: F401
+    except ImportError:
+        print("ok (fixture checks skipped, bs4 not installed)")
+        return
+    paths = fixture_paths()
+    assert paths, "no fixtures in tests/fixtures"
+    page, when = fixture(paths[0])
+    trains = scan(page, when, expand="all")
+    assert len(trains) == 15, len(trains)
+    by_dep = {t["dep"]: t for t in trains}
+
+    t = by_dep["08:23"]
+    assert t["arr"] == "12:58" and t["dur"] == "4sa 35dk", t
+    assert t["name"].startswith("YHT:") and not t["sold_out"]
+    cls = {c["name"]: c for c in t["classes"]}
+    assert cls["EKONOMİ"]["price"] == "₺930,00" and cls["EKONOMİ"]["seats"] > 0
+    assert cls["BUSİNESS"]["price"] == "₺1.395,00"           # header price hides this
+    assert cls["LOCA"]["seats"] == 0 and cls["LOCA"]["price"] == "DOLU"
+    assert "TEKERLEKLİ SANDALYE" in cls
+
+    # asking for EKONOMİ must never hand back the wheelchair place
+    hits, seen = available(page, ["08:23"], {"EKONOMİ"})
+    assert hits and all(WHEELCHAIR not in h["label"].upper() for h in hits)
+    assert "08:23" in seen and "05:30" in seen
+    # and it is only ever offered when the traveller asked for anything
+    loose, _ = available(page, ["08:23"], None)
+    assert any(WHEELCHAIR in h["label"].upper() for h in loose)
     print("ok")
 
 
 if __name__ == "__main__":
     try:
-        test() if "--test" in sys.argv else main()
+        if "--test" in sys.argv:
+            test()
+        elif "--replay" in sys.argv:
+            replay([a for a in sys.argv[1:] if a.endswith(".html")] or None)
+        else:
+            main()
     except KeyboardInterrupt:
         print(dim("\n  bye"))
