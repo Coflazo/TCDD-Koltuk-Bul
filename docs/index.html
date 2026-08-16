@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TCDD Koltuk Bul — boş koltuk takibi ve otomatik yer tutma</title>
+<meta name="description" content="A seat watcher and auto-reserve bot for TCDD e-bilet. Waits for a cancellation, takes the seat, holds it, and wakes you up.">
+<style>
+  /* One accent, one neutral ramp, one typeface. Everything else is spacing. */
+  :root{
+    --ink:#0d0d0f; --paper:#f4f2ee; --mute:#6c6a66; --line:#dedad3;
+    --accent:#d42f2f;           /* TCDD red, used sparingly so it still means something */
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --ink:#f2f0ec; --paper:#0d0d0f; --mute:#8f8c87; --line:#26262a; --accent:#ff5c5c; }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+  /* ---- hero: type does the work, nothing decorative ---- */
+  header{padding:clamp(72px,14vh,160px) 0 clamp(48px,8vh,96px)}
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--mute); margin:0 0 28px;
+  }
+  h1{
+    font-size:clamp(52px,11vw,148px); line-height:.92; letter-spacing:-.04em;
+    font-weight:800; margin:0 0 28px; text-wrap:balance;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{font-size:clamp(19px,2.4vw,27px);line-height:1.45;max-width:24ch;color:var(--ink);margin:0 0 14px;text-wrap:balance}
+  .lede-en{font-size:clamp(16px,1.6vw,19px);color:var(--mute);max-width:46ch;margin:0 0 40px}
+  .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{
+    display:inline-block;padding:13px 22px;border-radius:2px;text-decoration:none;
+    font-family:var(--mono);font-size:14px;letter-spacing:.02em;
+    background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+    transition:transform .18s cubic-bezier(.2,.7,.3,1), opacity .18s ease;
+  }
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:active{transform:translateY(0)}
+
+  /* ---- numbers strip ---- */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+         border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stat{padding:30px 0}
+  .stat b{display:block;font-size:clamp(30px,4.5vw,46px);letter-spacing:-.03em;line-height:1}
+  .stat span{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+
+  section{padding:clamp(64px,10vh,120px) 0}
+  h2{font-size:clamp(28px,4.6vw,52px);letter-spacing:-.03em;line-height:1.05;margin:0 0 12px;font-weight:800}
+  .sub{color:var(--mute);margin:0 0 52px;max-width:52ch}
+
+  /* ---- steps: the number is the graphic ---- */
+  .step{display:grid;grid-template-columns:88px 1fr;gap:26px;
+        padding:26px 0;border-top:1px solid var(--line)}
+  .step .n{font-family:var(--mono);font-size:13px;color:var(--accent);padding-top:7px;letter-spacing:.1em}
+  .step h3{margin:0 0 6px;font-size:20px;letter-spacing:-.01em}
+  .step p{margin:0;color:var(--mute);max-width:62ch}
+  @media(max-width:640px){ .step{grid-template-columns:1fr;gap:6px} .step .n{padding:0} }
+
+  /* ---- terminal ---- */
+  .term{
+    background:var(--ink);color:var(--paper);border-radius:6px;overflow:hidden;
+    box-shadow:0 24px 60px -30px rgba(0,0,0,.55);
+  }
+  .term .bar{display:flex;gap:7px;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .term .bar i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.2)}
+  .term pre{
+    margin:0;padding:22px;overflow-x:auto;font-family:var(--mono);
+    font-size:12.5px;line-height:1.72;
+  }
+  .term .g{color:#8f8c87}
+  .term .r{color:#ff6b6b}
+
+  /* ---- the actual engineering, which is the point of the page ---- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:var(--line)}
+  .card{background:var(--paper);padding:30px 26px}
+  .card h3{margin:0 0 10px;font-size:17px;letter-spacing:-.01em}
+  .card p{margin:0 0 12px;color:var(--mute);font-size:15px}
+  .card code{font-family:var(--mono);font-size:12.5px;background:rgba(127,127,127,.13);padding:2px 6px;border-radius:3px}
+
+  footer{border-top:1px solid var(--line);padding:44px 0 72px;color:var(--mute);font-size:14px}
+  footer a{color:var(--ink)}
+  a{color:var(--accent)}
+
+  /* Motion is opt-in and short. It exists to sequence attention, not to perform. */
+  .rise{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+  .rise.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .rise{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+    .btn{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">TCDD e-bilet &nbsp;/&nbsp; otomasyon</p>
+    <h1>Boş koltuk<br>çıkınca<br><em>anında</em> yakalar.</h1>
+    <p class="lede">Dolu trende yer açılana kadar bekler, koltuğu tutar, seni uyandırır.</p>
+    <p class="lede-en">Trains sell out weeks ahead, but people cancel constantly and the seat
+      is gone again in a minute. This waits for that minute.</p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/Coflazo/TCDD-Koltuk-Bul">Read the source</a>
+      <a class="btn ghost" href="#how">How it works</a>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>460</b><span>stations</span></div>
+    <div class="stat"><b>1</b><span>python file</span></div>
+    <div class="stat"><b>1</b><span>dependency</span></div>
+    <div class="stat"><b>45–90s</b><span>polite sweep</span></div>
+  </div>
+
+  <section id="how" class="rise">
+    <h2>Nasıl çalışır</h2>
+    <p class="sub">Seven steps, and it only ever asks you things a person would actually know.</p>
+
+    <div class="step"><div class="n">01</div><div>
+      <h3>Where are you going</h3>
+      <p>Type any fragment. All 460 stations come out of the page in one call and get matched
+      locally, so Turkish characters are optional and typos are fine: <em>sogutlucesme</em>
+      finds SÖĞÜTLÜÇEŞME, <em>ankra</em> gets a “did you mean ankara?”.</p></div></div>
+
+    <div class="step"><div class="n">02</div><div>
+      <h3>Which day, or days</h3>
+      <p>One if you are fixed, several if you are flexible. Type <em>17 18 21</em> and it
+      watches all three. A day that already went past means next month.</p></div></div>
+
+    <div class="step"><div class="n">03</div><div>
+      <h3>Reads every train</h3>
+      <p>Opens each one for every class with its own price and free seat count, because the
+      results page shows only the cheapest and quietly hides that business is ₺465 more.</p></div></div>
+
+    <div class="step"><div class="n">04</div><div>
+      <h3>You choose</h3>
+      <p>By row number or by departure time, because <em>08:23</em> is how you actually think
+      about trains. Then the classes you would genuinely sit in.</p></div></div>
+
+    <div class="step"><div class="n">05</div><div>
+      <h3>It waits</h3>
+      <p>One browser, one sweep every 45 to 90 seconds, randomised. A patient person, not a
+      request flood.</p></div></div>
+
+    <div class="step"><div class="n">06</div><div>
+      <h3>It takes the seat</h3>
+      <p>Class, Seçin, Devam Et, seat map, a free seat, bay/bayan, Seçimi Tamamla. A real hold
+      on TCDD's side.</p></div></div>
+
+    <div class="step"><div class="n">07</div><div>
+      <h3>It wakes you up</h3>
+      <p>Beeps until you answer and leaves the browser parked on your held seat. It never
+      sweeps again, and it never touches your card.</p></div></div>
+  </section>
+
+  <section class="rise">
+    <h2>Örnek</h2>
+    <p class="sub">An hour of waiting, then somebody cancels.</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+<pre>  <span class="g">TCDD Koltuk Bul  ·  TCDD boş koltuk takibi  ·  ctrl-c to quit</span>
+
+  from: <b>ista</b>
+     1) İSTANBUL(PENDİK) , İSTANBUL
+     5) İSTANBUL(SÖĞÜTLÜÇEŞME) , İSTANBUL
+    which one? <b>5</b>
+  to: <b>ankra</b>
+    <span class="g">did you mean ankara?</span>
+     1) ANKARA GAR , ANKARA
+    which one? <b>1</b>
+
+  days: <b>25 26</b>
+
+  25.08.2026 Salı
+   3  08:23 → 12:58  4sa 35dk   YHT: 81030 İSTANBUL - ANKARA
+      <span class="g">BUSİNESS ₺1.395,00 (1) · EKONOMİ ₺930,00 (40) · LOCA DOLU</span>
+
+  watch which? <b>3 4</b>
+  which classes would you take? <b>2</b>
+  travelling as bay or bayan? <b>b</b>
+
+  <span class="g">sweep 6 found nothing · looking again in  62s</span>
+  <span class="g">sweep 7 found nothing · looking again in  48s</span>
+
+  <span class="r">08:23 YHT: 81030 İSTANBUL - ANKARA -> 12:58  EKONOMİ ₺930,00 (1)</span>
+  <span class="r">held -> wagon 5, seat 21c</span>
+
+  press ENTER to stop the alarm...</pre>
+    </div>
+  </section>
+
+  <section class="rise">
+    <h2>Zor kısımlar</h2>
+    <p class="sub">The parts that took the longest were never the parts that looked hard.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Seats are images, not classes</h3>
+        <p>The map does not mark a free seat with a CSS class. It swaps the seat image, and
+        that image is a base64 blob.</p>
+        <p>So instead of pasting a blob in the source, it finds the image that appears exactly
+        as many times as the wagon button says are free. Self-calibrating, and it survives
+        TCDD redrawing the icons.</p>
+      </div>
+      <div class="card">
+        <h3>A dropdown that closes itself</h3>
+        <p>The station input is a <code>data-toggle</code>. Clicking it when the list is
+        already open shuts it, and every option silently stops being clickable.</p>
+        <p>Fixed by only opening it when it is shut.</p>
+      </div>
+      <div class="card">
+        <h3>The same date, twice</h3>
+        <p>The calendar renders two months side by side, and each repeats the other's
+        spill-over days. The same <code>data-date</code> matches two cells and strict mode
+        throws.</p>
+        <p><code>:not(.off)</code> keeps it to one.</p>
+      </div>
+      <div class="card">
+        <h3>İ.lower() is not i</h3>
+        <p>Python turns <code>"İ".lower()</code> into an i plus a separate combining dot, which
+        matches nothing a person ever types.</p>
+        <p>Fold the Turkish letters flat first, lowercase after.</p>
+      </div>
+      <div class="card">
+        <h3>Cards that move</h3>
+        <p>Track positions shift as the day's early departures leave, so <code>gidis1</code>
+        quietly becomes a different train.</p>
+        <p>Everything is keyed on departure time instead.</p>
+      </div>
+      <div class="card">
+        <h3>One accordion, one card</h3>
+        <p>Scanning every train collapsed the one that had the seat, so the wagon button was
+        no longer clickable when it mattered.</p>
+        <p>Re-open before grabbing.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Kişisel kullanım içindir.</strong> Tek yolcu, tek koltuk, nazik aralıklarla.
+    Wheelchair places are excluded unless explicitly chosen — they exist for people who
+    cannot use any other seat. Payment is never automated.</p>
+    <p>MIT · <a href="https://github.com/Coflazo/TCDD-Koltuk-Bul">github.com/Coflazo/TCDD-Koltuk-Bul</a>
+    · Not affiliated with TCDD Taşımacılık A.Ş.</p>
+  </footer>
+
+</div>
+
+<script>
+  // Reveal on first scroll-in, once, then stop observing. Nothing animates twice.
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('.rise').forEach(function (el) { io.observe(el); });
+</script>
+</body>
+</html>
