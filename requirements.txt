@@ -1,0 +1,2 @@
+# Undetected Playwright fork. Plain `playwright` also works, the import falls back.
+patchright>=1.40
