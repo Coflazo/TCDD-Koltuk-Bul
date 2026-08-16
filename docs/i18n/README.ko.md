@@ -1,5 +1,29 @@
 # TCDD Koltuk Bul
 
+[English](../../README.md) ·
+[Türkçe](README.tr.md) ·
+[Deutsch](README.de.md) ·
+[Русский](README.ru.md) ·
+[العربية](README.ar.md) ·
+[فارسی](README.fa.md) ·
+[Français](README.fr.md) ·
+[Español](README.es.md) ·
+[Nederlands](README.nl.md) ·
+[Български](README.bg.md)
+
+[Українська](README.uk.md) ·
+[Polski](README.pl.md) ·
+[Română](README.ro.md) ·
+[Ελληνικά](README.el.md) ·
+[Italiano](README.it.md) ·
+[Azərbaycanca](README.az.md) ·
+[ქართული](README.ka.md) ·
+[中文](README.zh.md) ·
+[日本語](README.ja.md) ·
+**한국어**
+
+---
+
 **매진된 튀르키예 기차에서 취소석이 나오는 순간 잡아서 대신 잡아두는 봇입니다.**
 
 지정한 열차를 계속 확인합니다. 누군가 취소하면 좌석을 선택하고 TCDD의 임시 예약을 시작한 뒤,

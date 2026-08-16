@@ -1,5 +1,29 @@
 # TCDD Koltuk Bul
 
+[English](../../README.md) ·
+[Türkçe](README.tr.md) ·
+[Deutsch](README.de.md) ·
+[Русский](README.ru.md) ·
+[العربية](README.ar.md) ·
+[فارسی](README.fa.md) ·
+[Français](README.fr.md) ·
+**Español** ·
+[Nederlands](README.nl.md) ·
+[Български](README.bg.md)
+
+[Українська](README.uk.md) ·
+[Polski](README.pl.md) ·
+[Română](README.ro.md) ·
+[Ελληνικά](README.el.md) ·
+[Italiano](README.it.md) ·
+[Azərbaycanca](README.az.md) ·
+[ქართული](README.ka.md) ·
+[中文](README.zh.md) ·
+[日本語](README.ja.md) ·
+[한국어](README.ko.md)
+
+---
+
 **Un bot que caza los asientos que se liberan en trenes turcos agotados y los reserva al instante.**
 
 Comprueba una y otra vez los trenes que elijas en la web de TCDD. En cuanto alguien

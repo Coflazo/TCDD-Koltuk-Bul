@@ -1,5 +1,29 @@
 # TCDD Koltuk Bul
 
+[English](../../README.md) ·
+[Türkçe](README.tr.md) ·
+[Deutsch](README.de.md) ·
+[Русский](README.ru.md) ·
+[العربية](README.ar.md) ·
+**فارسی** ·
+[Français](README.fr.md) ·
+[Español](README.es.md) ·
+[Nederlands](README.nl.md) ·
+[Български](README.bg.md)
+
+[Українська](README.uk.md) ·
+[Polski](README.pl.md) ·
+[Română](README.ro.md) ·
+[Ελληνικά](README.el.md) ·
+[Italiano](README.it.md) ·
+[Azərbaycanca](README.az.md) ·
+[ქართული](README.ka.md) ·
+[中文](README.zh.md) ·
+[日本語](README.ja.md) ·
+[한국어](README.ko.md)
+
+---
+
 <div dir="rtl" markdown="1">
 
 **رباتی که صندلی‌های آزادشده در قطارهای پرِ ترکیه را می‌قاپد و بی‌درنگ نگه می‌دارد.**

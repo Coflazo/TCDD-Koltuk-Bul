@@ -1,5 +1,29 @@
 # TCDD Koltuk Bul
 
+[English](../../README.md) ·
+[Türkçe](README.tr.md) ·
+[Deutsch](README.de.md) ·
+[Русский](README.ru.md) ·
+[العربية](README.ar.md) ·
+[فارسی](README.fa.md) ·
+[Français](README.fr.md) ·
+[Español](README.es.md) ·
+[Nederlands](README.nl.md) ·
+**Български**
+
+[Українська](README.uk.md) ·
+[Polski](README.pl.md) ·
+[Română](README.ro.md) ·
+[Ελληνικά](README.el.md) ·
+[Italiano](README.it.md) ·
+[Azərbaycanca](README.az.md) ·
+[ქართული](README.ka.md) ·
+[中文](README.zh.md) ·
+[日本語](README.ja.md) ·
+[한국어](README.ko.md)
+
+---
+
 **Бот, който хваща освободилите се места в разпродадени турски влакове и веднага ги запазва.**
 
 Проверява избраните от вас влакове в сайта на TCDD отново и отново. Щом някой анулира

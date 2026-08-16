@@ -1,5 +1,29 @@
 # TCDD Koltuk Bul
 
+[English](../../README.md) ·
+[Türkçe](README.tr.md) ·
+[Deutsch](README.de.md) ·
+**Русский** ·
+[العربية](README.ar.md) ·
+[فارسی](README.fa.md) ·
+[Français](README.fr.md) ·
+[Español](README.es.md) ·
+[Nederlands](README.nl.md) ·
+[Български](README.bg.md)
+
+[Українська](README.uk.md) ·
+[Polski](README.pl.md) ·
+[Română](README.ro.md) ·
+[Ελληνικά](README.el.md) ·
+[Italiano](README.it.md) ·
+[Azərbaycanca](README.az.md) ·
+[ქართული](README.ka.md) ·
+[中文](README.zh.md) ·
+[日本語](README.ja.md) ·
+[한국어](README.ko.md)
+
+---
+
 **Бот, который ловит освободившиеся места в распроданных турецких поездах и сразу их удерживает.**
 
 Он снова и снова проверяет выбранные вами рейсы на сайте TCDD. Как только кто-то сдаёт

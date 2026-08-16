@@ -1,5 +1,29 @@
 # TCDD Koltuk Bul
 
+[English](../../README.md) ·
+[Türkçe](README.tr.md) ·
+[Deutsch](README.de.md) ·
+[Русский](README.ru.md) ·
+[العربية](README.ar.md) ·
+[فارسی](README.fa.md) ·
+[Français](README.fr.md) ·
+[Español](README.es.md) ·
+[Nederlands](README.nl.md) ·
+[Български](README.bg.md)
+
+[Українська](README.uk.md) ·
+[Polski](README.pl.md) ·
+[Română](README.ro.md) ·
+[Ελληνικά](README.el.md) ·
+[Italiano](README.it.md) ·
+[Azərbaycanca](README.az.md) ·
+[ქართული](README.ka.md) ·
+**中文** ·
+[日本語](README.ja.md) ·
+[한국어](README.ko.md)
+
+---
+
 **在售罄的土耳其火车上抢下退票席位，并立刻替你锁住。**
 
 它会不断刷新你选定的车次。一旦有人退票，它就选中座位，触发 TCDD 自带的临时占座，然后一直响铃，

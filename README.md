@@ -13,6 +13,7 @@
 
 for `ebilet.tcddtasimacilik.gov.tr`
 
+**English** ·
 [Türkçe](docs/i18n/README.tr.md) ·
 [Deutsch](docs/i18n/README.de.md) ·
 [Русский](docs/i18n/README.ru.md) ·
@@ -21,9 +22,9 @@ for `ebilet.tcddtasimacilik.gov.tr`
 [Français](docs/i18n/README.fr.md) ·
 [Español](docs/i18n/README.es.md) ·
 [Nederlands](docs/i18n/README.nl.md) ·
-[Български](docs/i18n/README.bg.md) ·
-[Українська](docs/i18n/README.uk.md)
+[Български](docs/i18n/README.bg.md)
 
+[Українська](docs/i18n/README.uk.md) ·
 [Polski](docs/i18n/README.pl.md) ·
 [Română](docs/i18n/README.ro.md) ·
 [Ελληνικά](docs/i18n/README.el.md) ·
